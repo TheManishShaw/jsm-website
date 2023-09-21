@@ -11,7 +11,6 @@ interface Props {
 }
 
 const page = async ({ searchParams }: Props) => {
-  console.log(searchParams);
   const resources = await getResource({
     query: searchParams?.query || "",
     category: searchParams?.category || "",
@@ -19,8 +18,6 @@ const page = async ({ searchParams }: Props) => {
   });
 
   const resourcesPlaylist = await getResourcePlaylist();
-
-  console.log(resourcesPlaylist);
 
   return (
     <main className="flex-center paddings mx-auto w-full max-w-screen-2xl flex-col">
@@ -35,7 +32,10 @@ const page = async ({ searchParams }: Props) => {
       <Filters />
       {(searchParams?.query || searchParams?.category) && (
         <section className="flex-center mt-6 w-full flex-col sm:mt-20">
-          <Header category="Resources" query={searchParams?.query || ""} />
+          <Header
+            category={searchParams?.category || ""}
+            query={searchParams?.query || ""}
+          />
           <div className="mt-12 flex w-full flex-wrap justify-center gap-16 sm:justify-start">
             {resources?.length > 0 ? (
               resources.map((resource: any) => (
@@ -45,7 +45,7 @@ const page = async ({ searchParams }: Props) => {
                   id={resource._id}
                   image={resource.image}
                   downloadNumber={resource.views}
-                  slug={resource._id}
+                  downloadLink={resource.downloadLink}
                 />
               ))
             ) : (
@@ -68,7 +68,7 @@ const page = async ({ searchParams }: Props) => {
                 id={resource._id}
                 image={resource.image}
                 downloadNumber={resource.views}
-                slug={resource._id}
+                downloadLink={resource.downloadLink}
               />
             ))}
           </div>
